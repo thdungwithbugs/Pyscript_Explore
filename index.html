@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css">
+    
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <py-env>
+- numpy
+- matplotlib
+- pandas
+- altair
+- vega_datasets
+      </py-env>
+    <title>To_do_app PyScript</title>
+    <py-register-widget src="pylist.py" name="py-todolist" klass="PyList"></py-register-widget>
+    <style>
+        #todolist-list-tasks-container{
+            margin: 0;
+            color: rgb(186, 38, 255);
+            font-weight: 500;
+        }
+        .parentBox{
+            margin: 0.2rem 0;
+        }
+        .buttons-box{
+            position: absolute;
+            top: 0.5rem;
+        }
+        .output{
+            margin-top: 0.5rem;
+        }
+        img{
+            margin: 0 auto;
+        }
+        .vega-embed{
+            width: 100%;
+        }
+        canvas, table{
+            margin: 0 auto;
+        }
+        #todolist-list-tasks-container{
+            background: aliceblue;
+        }
+        #todolist-list-tasks-container section{
+            background: aliceblue;
+        }
+    </style>
+
+</head>
+<body style="width: 50vw; margin: 3rem auto; background: aliceblue;">
+    <!-- <py-env>
+- math
+- numpy
+- matplotlib
+    </py-env> -->
+    <h2 style="font-weight:bold; font-size: 2em; text-align: center; ">Simple To-do-List by PyScript </h2>
+    <h3 style="font-weight:semi-bold; font-size: 1rem; text-align: center; margin-bottom: 1rem;">Work to do - Deadline</h3>
+    <div style="margin-bottom: 2rem;">
+        <py-script style="text-align: center;">
+from datetime import datetime as time
+time.now().strftime("Day %d, %b/%y")
+        </py-script>
+    </div>
+    <div style="width: 100%">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <py-todolist id="todolist"></py-todolist>
+            <py-inputbox id="new_entry" style="width:100%;">
+                <!-- Hàm nhận sự kiện enter => thực thi hàm add -->
+                def on_keypress(event):
+                    if(event.code == "Enter"):
+                        add_contact()
+            </py-inputbox>
+            <py-button id="new-guest-btn" label="Thêm công việc">
+                <!-- Hàm onClick => thực thi hàm add  -->
+                def on_click(event):
+                    add_contact()
+            </py-button>
+            <py-script>
+print('VD: Đi chơi với người yêu - 18:00')
+            </py-script>
+        </div>
+    </div>
+<py-script>
+from datetime import datetime as time
+
+def extract(new_entry):
+    return [str.strip() for str in new_entry.split('-')]
+def add_contact():
+    worktodo, deadline = extract(new_entry.value)
+    workItem = {"worktodo": worktodo, "deadline": deadline, "deleted": False, "time": time.now()}
+    todolist.add(workItem)
+    new_entry.clear()
+</py-script>
+    <br>
+    <hr>
+    <br>
+    <h2 style="font-weight:bold; font-size: 2em; text-align: center; ">Read Eval Print Loop</h2>
+    <py-repl></py-repl>
+    <py-script>
+print('Tham khảo nguồn: pyscript.com, SamuelChan')
+    </py-script>
+    <br>
+    <hr>
+    <h2 style="font-weight:bold; font-size: 2em; text-align: center; ">Py Graphs demo</h2>
+    <py-script output="plot">
+<!-- import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import california_cities.csv as data
+
+cities = pd.read_csv(data)
+cities.head()
+print('hello') -->
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+x = np.random.randn(100)
+y = np.random.randn(100)
+
+fig, ax = plt.subplots()
+plt.title("random plots")
+ax.scatter(x, y)
+fig
+
+    </py-script> 
+    <br>
+    <br>
+    <py-script style="margin: auto;">
+x = [3,4,7]
+y=[2,4,10]
+z=[12,5,3]
+
+fig, ax = plt.subplots()
+ax.plot(x,y)
+ax.plot(y,z)
+plt.title("plot demo with pyscript")
+plt.xlabel('trục x')
+plt.ylabel('trục y')
+fig
+
+    </py-script>
+    <br>
+    <br>
+    <py-script>
+fig, ax = plt.subplots()
+        
+year_1 = [2015, 2017, 2018, 2019, 2020]
+population_1 = [7433, 7742, 7914, 8093, 8246]
+year_3 = [2015, 2017, 2018, 2019, 2020]
+population_3 = [1056, 1098, 1114, 1141, 1169]
+        
+year_2 = [2015, 2017, 2018, 2019, 2020]
+population_2 = [8308, 8649, 8843, 9038, 9227]
+        
+plt.plot(year_1, population_1, marker='o', linestyle='--', color='g', label='TP. Hà Nội')
+plt.plot(year_2, population_2,  marker='d', linestyle='-', color='r', label='TP. Hồ Chí Minh')
+plt.plot(year_3, population_3,  marker='4', linestyle=':', color='y', label='TP. Đà Nẵng')
+        
+plt.xlabel('Năm')
+plt.ylabel('Dân số (Nghìn người)')
+plt.title('Thống kê dân số một số tỉnh thành lớn giai đoạn 2016-2022 (Nguồn: GSO)')
+plt.legend(loc='lower right')
+        
+fig
+    </py-script>
+    <br>
+    <br>
+    <py-script style="margin: 2rem auto;">
+import altair as alt
+from vega_datasets import data
+cars = data.cars()
+
+rect = alt.Chart(cars).mark_point().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color='Origin',
+    shape='Origin'
+).properties(
+    title={
+        "text": ["Thống kê so sánh mã lực/dặm ô tô ở các châu lục"], 
+        "subtitle": ["Theo thống kê của vega_datasets"],
+        "color": "blue",
+        "subtitleColor": "green"
+      }
+)
+rect        
+    </py-script>
+    <br>
+    <br>
+    <py-script style="margin: 2rem auto;">
+print('Bảng thống kê nhiệt độ (C), lượng mưa (mm), tốc độ gió (m/s) và kiểu thời tiết tại Seattle - Hoa Kỳ')
+df = data.seattle_weather()
+df.head()
+    </py-script>
+    <br>
+    <br>
+    <py-script style="margin: 2rem auto;">
+alt.Chart(df).mark_point().encode(
+    alt.X('temp_max', title='Maximum Daily Temperature (C)'),
+    alt.Y('temp_range:Q', title='Daily Temperature Range (C)'),
+    alt.Color('weather'),
+    alt.Size('precipitation'),
+).properties(
+    title={
+        "text": ["Các kiểu thời tiết tại TP. Seattle - Hoa Kỳ"], 
+        "subtitle": ["Theo thống kê của vega_datasets"],
+        "color": "blue",
+        "subtitleColor": "green"
+      }
+).transform_calculate(
+    "temp_range", "datum.temp_max - datum.temp_min"
+).properties(
+    width=600,
+    height=400
+).interactive()
+    </py-script>
+    <br>
+    <br>
+    <div id="plot"></div>
+
+</body>
+</html>
